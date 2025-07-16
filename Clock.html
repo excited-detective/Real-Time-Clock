@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+<body>
+   <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+      <h1>Real-Time Clock</h1>
+      <div id="clock" style="font-size: 2.5rem; font-family: monospace; margin-top: 20px;"></div>
+      <button id="toggleFormat" style="margin-top: 20px; padding: 10px 20px; font-size: 1rem; cursor: pointer;">Switch to 12-hour</button>
+   </div>
+   <script>
+      let is24Hour = true;
+      function updateClock() {
+         const now = new Date();
+         let hours = now.getHours();
+         let minutes = String(now.getMinutes()).padStart(2, '0');
+         let seconds = String(now.getSeconds()).padStart(2, '0');
+         let display = '';
+         if (is24Hour) {
+            display = `${String(hours).padStart(2, '0')}:${minutes}:${seconds}`;
+         } else {
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0 should be 12
+            display = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+         }
+         document.getElementById('clock').textContent = display;
+      }
+      document.getElementById('toggleFormat').onclick = function() {
+         is24Hour = !is24Hour;
+         this.textContent = is24Hour ? 'Switch to 12-hour' : 'Switch to 24-hour';
+         updateClock();
+      };
+      setInterval(updateClock, 1000);
+      updateClock();
+   </script>
+</body>
+</html> 
